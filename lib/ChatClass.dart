@@ -19,9 +19,13 @@ class ChatScreen extends StatefulWidget {
 // Add the ChatScreenState class definition in main.dart.
 
 class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
+  bool _isComposing = false;
   final List<ChatMessage> _messages = <ChatMessage>[];
   void _handleSubmitted(String text) {
     _textController.clear();
+    setState(() {                                                    //new
+      _isComposing = false;                                          //new
+    });
     ChatMessage message = new ChatMessage(
       text: text,
       animationController: new AnimationController(
@@ -75,6 +79,11 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
           new Flexible(
             child: new TextField(
               controller: _textController,
+              onChanged: (String text) {
+                setState(() {
+                  _isComposing = text.length > 0;
+                });
+              },
               onSubmitted: _handleSubmitted,
               decoration: new InputDecoration.collapsed(
                   hintText: "Send a message"),
@@ -84,7 +93,10 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
             margin: new EdgeInsets.symmetric(horizontal: 4.0),
             child: new IconButton(
                 icon: new Icon(Icons.send),
-                onPressed: () => _handleSubmitted(_textController.text)),
+              onPressed: _isComposing
+                  ? () => _handleSubmitted(_textController.text)    //modified
+                  : null,
+            ),
           ),
         ],
       ),

@@ -35,7 +35,9 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   Widget _buildTextComposer() {
-    return new Container(
+    return new IconTheme(                                            //new
+        data: new IconThemeData(color: Theme.of(context).accentColor), //new
+        child:  new Container(
       margin: const EdgeInsets.symmetric(horizontal: 8.0),
       child: new Row(                                            //new
         children: <Widget>[                                      //new
@@ -56,6 +58,7 @@ class ChatScreenState extends State<ChatScreen> {
         ],                                                        //new
       ),                                                          //new
 
+        ),
     );
   }
 }

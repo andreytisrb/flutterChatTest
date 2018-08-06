@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'ChatMessage.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -31,12 +32,30 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   }
 
   final TextEditingController _textController = new TextEditingController();
+  final TextEditingController _chatNameTextController = new TextEditingController(
+    text: "testOne"
+  );
 
+  void _handleChatChangeName(String chatName){
+    final doc = Firestore.instance.collection("chats").
+    where("name",isEqualTo: chatName)
+    .getDocuments().
+    asStream().listen((onData){
+      final rs = onData.documents.first;
+      int t = 0;
+      t++;
+    }).resume();
+    int t = 0;
+    t++;
+  }
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-          title: new Text("Friendlychat"),
+          title: TextField(
+            controller: _chatNameTextController,
+            onChanged: _handleChatChangeName,
+          ),//new Text("Friendlychat"),
           elevation:
           Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
       ),
